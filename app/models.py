@@ -6,7 +6,7 @@ from django.utils.text import slugify
 from django.urls import reverse
 import uuid
 
-
+# from notification.models import Notification
 
 
 # uploading user files to a specific directory

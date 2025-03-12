@@ -1,10 +1,11 @@
+from pyexpat import model
 from django.db import models
 from django.contrib.auth.models import User
 from app.models import Post
 from django.db.models.signals import post_save, post_delete
-
+# from notification.models import Notification
 # Create your models here.
-
+#new changes
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comment")

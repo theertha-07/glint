@@ -28,6 +28,7 @@ urlpatterns = [
     path('users/', include('userauths.urls')),
     path('post/', include('app.urls')),
     path('message/', include('directs.urls')),
+   
 
     # Profile url section
     path('<username>/', UserProfile, name="profile"),
