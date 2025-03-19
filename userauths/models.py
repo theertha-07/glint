@@ -10,6 +10,8 @@ import uuid
 from django.utils import timezone
 from app.models import Post
 
+
+
 # uploading user files to a specific directory
 def user_directory_path(instance, filename):
     return 'user_{0}/{1}'.format(instance.user.id, filename)
@@ -27,7 +29,7 @@ class Profile(models.Model):
 
 
 #profile resize 
-    
+     
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 

@@ -44,7 +44,7 @@
 
                         {% if request.user.is_authenticated and request.user == profile.user %}
                         <a style="text-decoration: none;" href="{% url 'editprofile' %}" class="btn profile-edit-btn">Edit Profile</a>
-                        <a style="text-decoration: none;" href=" url 'sign-out' " class="btn profile-edit-btn">Logout</a>
+                        <a style="text-decoration: none;" href="{% url 'sign-out' %}" class="btn profile-edit-btn">Logout</a>
                         <button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog" aria-hidden="true"></i></button>
 
                         
@@ -59,7 +59,7 @@
                         {% endif %}
 
                         {% if request.user.is_authenticated and request.user != profile.user %}
-                                <a href="{% url 'conversation' profile.user %}" class="btn profile-edit-btn">Message</a> <br><br>
+                                <a href="{% url 'conversation' profile.user  %}" class="btn profile-edit-btn">Message</a> <br><br>
                         {% endif %}
                         <br>
 
@@ -119,7 +119,7 @@
             <div class="gallery">
                 
                 {% for post in posts %}
-                <a href="{{ post.get_absolute_url }}"><div class="gallery-item" tabindex="0">
+                <a href="{{post.get_absolute_url}}"><div class="gallery-item" tabindex="0">
 
                     <img src="{{ post.picture.url }}" class="gallery-image" alt="" style="width: 500px; height: 300px; object-fit: cover;">
 

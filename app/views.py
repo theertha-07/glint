@@ -146,6 +146,7 @@ def favourite(request, post_id):
     user = request.user
     post = Post.objects.get(id=post_id)
     profile = Profile.objects.get(user=user)
+    
     if profile.favourite.filter(id=post_id).exists():
         profile.favourite.remove(post)
     else:

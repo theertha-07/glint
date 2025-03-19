@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 
 # from userauths.models import Profile
 from userauths.views import UserProfile, follow
+
 # from directs.views import inbox, Directs
 
 urlpatterns = [
@@ -28,6 +29,7 @@ urlpatterns = [
     path('users/', include('userauths.urls')),
     path('post/', include('app.urls')),
     path('message/', include('directs.urls')),
+    path('notifications/', include('notification.urls')),
    
 
     # Profile url section
