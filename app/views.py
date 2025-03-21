@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 from app.models import Post, Tag, Follow, Stream, Likes
 from django.contrib.auth.models import User
 from app.forms import NewPostform
-from userauths.models import Profile
+from authy.models import Profile
 
 from comment.models import Comment
 from comment.forms import NewCommentForm

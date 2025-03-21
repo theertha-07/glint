@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'app',
     'crispy_forms',
     'crispy_bootstrap4',
-    'userauths',
+    'authy',
     'comment',
     'directs',
     'notification',

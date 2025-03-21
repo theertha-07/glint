@@ -2,7 +2,7 @@
 
 import django.db.models.deletion
 import django.utils.timezone
-import userauths.models
+import authy.models
 from django.conf import settings
 from django.db import migrations, models
 
@@ -10,7 +10,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('userauths', '0001_initial'),
+        ('authy', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='profile',
             name='image',
-            field=models.ImageField(blank=True, null=True, upload_to=userauths.models.user_directory_path, verbose_name='picture'),
+            field=models.ImageField(blank=True, null=True, upload_to=authy.models.user_directory_path, verbose_name='picture'),
         ),
         migrations.AddField(
             model_name='profile',

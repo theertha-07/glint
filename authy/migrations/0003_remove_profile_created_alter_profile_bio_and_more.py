@@ -7,7 +7,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('app', '0003_alter_post_id_alter_tag_title'),
-        ('userauths', '0002_profile_bio_profile_created_profile_first_name_and_more'),
+        ('authy', '0002_profile_bio_profile_created_profile_first_name_and_more'),
     ]
 
     operations = [

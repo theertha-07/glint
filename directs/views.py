@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from directs.models import Message
-from userauths.models import Profile
+from authy.models import Profile
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db.models import Q

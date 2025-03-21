@@ -1,5 +1,5 @@
 from django import forms
-from userauths.models import Profile
+from authy.models import Profile
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
@@ -12,10 +12,11 @@ class EditProfileForm(forms.ModelForm):
     bio = forms.CharField(widget=forms.TextInput(attrs={'class': 'input', 'placeholder': 'Bio'}), required=True)
     url = forms.CharField(widget=forms.TextInput(attrs={'class': 'input', 'placeholder': 'URL'}), required=True)
     location = forms.CharField(widget=forms.TextInput(attrs={'class': 'input', 'placeholder': 'Address'}), required=True)
-    
+
     class Meta:
         model = Profile
         fields = ['image', 'first_name', 'last_name', 'bio', 'url', 'location']
+
 
 
 class UserRegisterForm(UserCreationForm):

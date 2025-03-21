@@ -9,8 +9,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 
 from app.models import Post, Follow, Stream
-from userauths.models import Profile
-from userauths.forms import EditProfileForm, UserRegisterForm
+from authy.models import Profile
+from authy.forms import EditProfileForm, UserRegisterForm
 from django.urls import resolve
  
 

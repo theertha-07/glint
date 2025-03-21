@@ -1,4 +1,4 @@
 from django.contrib import admin
-from userauths.models import Profile
+from authy.models import Profile
 
 admin.site.register(Profile)

@@ -20,13 +20,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 # from userauths.models import Profile
-from userauths.views import UserProfile, follow
+from authy.views import UserProfile, follow
 
 # from directs.views import inbox, Directs
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('users/', include('userauths.urls')),
+    path('users/', include('authy.urls')),
     path('post/', include('app.urls')),
     path('message/', include('directs.urls')),
     path('notifications/', include('notification.urls')),
