@@ -205,6 +205,7 @@ img {
     animation: loader 500ms linear infinite;
 }
 
+
 /* Media Query */
 
 @media screen and (max-width: 40rem) {

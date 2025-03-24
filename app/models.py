@@ -19,7 +19,7 @@ def user_directory_path(instance, filename):
 
 class Tag(models.Model):
     title = models.CharField(max_length=75, verbose_name='Tag')
-    slug = models.SlugField(null=False, unique=True, default=uuid.uuid1)
+    slug = models.SlugField(null=False, unique=True)
 
     class Meta:
         verbose_name = 'Tag'
@@ -37,12 +37,13 @@ class Tag(models.Model):
         return super().save(*args, **kwargs)
 
 # class PostFileContent(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     file = models.FileField(upload_to=user_directory_path, verbose_name="Choose File")
+#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='content_owner')
+#     file = models.FileField(upload_to=user_directory_path)
 
 class Post(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     picture = models.ImageField(upload_to=user_directory_path, verbose_name="Picture", null=True)
+    # content =  models.ManyToManyField(PostFileContent, related_name='contents')
     caption = models.CharField(max_length=10000, verbose_name="Caption")
     posted = models.DateField(auto_now_add=True)
     tags = models.ManyToManyField(Tag, related_name="tags")
@@ -53,18 +54,23 @@ class Post(models.Model):
         return reverse("post-details", args=[str(self.id)])
 
     # def __str__(self):
+	#     return str(self.id)
+    
+    # def __str__(self):
     #     return str(self.caption)
+
+ 
 
 
 class Likes(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_like')
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="post_likes")
 
     def user_liked_post(sender, instance, *args, **kwargs):
         like = instance
         post = like.post
         sender = like.user
-        notify = Notification(post=post, sender=sender, user=post.user)
+        notify = Notification(post=post, sender=sender, user=post.user, notification_types=1)
         notify.save()
 
     def user_unliked_post(sender, instance, *args, **kwargs):

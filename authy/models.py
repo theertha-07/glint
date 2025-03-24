@@ -12,9 +12,16 @@ from app.models import Post
 
 
 
+
+
 # uploading user files to a specific directory
 def user_directory_path(instance, filename):
     return 'user_{0}/{1}'.format(instance.user.id, filename)
+
+
+
+
+    
 
 class Profile(models.Model):
     user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
@@ -44,6 +51,9 @@ class Profile(models.Model):
             output_size = (300, 300)
             img.thumbnail(output_size)
             img.save(self.image.path)
+
+
+
 
 
 def create_user_profile(sender, instance, created, **kwargs):

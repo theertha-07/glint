@@ -31,6 +31,7 @@ urlpatterns = [
     path('message/', include('directs.urls')),
     path('notifications/', include('notification.urls')),
    
+    path('stories/', include('stories.urls')),
 
     # Profile url section
     path('<username>/', UserProfile, name="profile"),

@@ -31,7 +31,7 @@
 
             <!-- First Section -->
             {% for notification in notifications %}
-                {% if notification.notification_type == 1 %}
+                {% if notification.notification_types == 1 %}
                     <div class="alert alert-white alert-dismissible fade show" role="alert" style="border: 1px rgba(219, 219, 219, 0.699) solid; border-radius: 25px;">
                         <div class="side-menu__user-profile">
                             <a href="{% url 'profile' user.username %}" class="side-menu__user-avatar">
@@ -43,7 +43,7 @@
                             </a>
                             <div class="side-menu__user-idnfo" style="text-align: start;">
                                 <a href="{% url 'profile' user.username %}" style="font-size: 15px; color: black; text-align: center;">{{ notification.sender.profile.first_name|title }} {{ notification.sender.profile.last_name|title }}</a> <br>
-                                <a href="{% url 'profile' user.username %}" style="font-size: 15px; color: black; text-align: center;"><b><i class="bi bi-hand-thumbs-up-fill" style="color: blue;"></i> Liked you Picture</b></a> <br>
+                                <a href="{% url 'profile' user.username %}" style="font-size: 15px; color: black; text-align: center;"><b><i class="bi bi-hand-thumbs-up-fill" style="color: blue;"></i> Liked your Picture</b></a> <br>
                                 <a href="{% url 'profile' user.username %}" style="font-size: 10px; color: rgb(75, 75, 75); ">{{ notification.date }}</a>
 
                             </div>
@@ -55,7 +55,7 @@
                       </div>
                 {% endif %}
                 
-                {% if notification.notification_type == 3 %}
+                {% if notification.notification_types == 3 %}
                     <div class="alert alert-white alert-dismissible fade show" role="alert" style="border: 1px rgba(219, 219, 219, 0.699) solid; border-radius: 25px;">
                         <div class="side-menu__user-profile">
                             <a href="{% url 'profile' user.username %}" class="side-menu__user-avatar">
@@ -67,7 +67,7 @@
                             </a>
                             <div class="side-menu__user-idnfo" style="text-align: start;">
                                 <a href="{% url 'profile' user.username %}" style="font-size: 15px; color: black; text-align: center;">{{ notification.sender.profile.first_name|title }} {{ notification.sender.profile.last_name|title }}</a> <br>
-                                <a href="{% url 'profile' user.username %}" style="font-size: 15px; color: black; text-align: center;"><b><i class="bi bi-hand-thumbs-up-fill" style="color: blue;"></i> Liked you Picture</b></a> <br>
+                                <a href="{% url 'profile' user.username %}" style="font-size: 15px; color: black; text-align: center;"><b><i class="bi bi-person-fill" style="font-size: 20px;color: rgb(255, 0, 0);"></i> Followed You</b></a> <br>
                                 <a href="{% url 'profile' user.username %}" style="font-size: 10px; color: rgb(75, 75, 75); ">{{ notification.date }}</a>
                             </div>
                         </div>
@@ -76,7 +76,7 @@
                 {% endif %}
 
 
-                {% if notification.notification_type == 2 %}
+                {% if notification.notification_types == 2 %}
                 <div class="alert alert-white alert-dismissible fade show" role="alert" style="border: 1px rgba(219, 219, 219, 0.699) solid; border-radius: 25px;">
                   <div class="side-menu__user-profile">
 

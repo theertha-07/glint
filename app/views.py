@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
+from django.template import loader
 
 from app.models import Post, Tag, Follow, Stream, Likes
 from django.contrib.auth.models import User
@@ -113,12 +114,15 @@ def Tags(request, tag_slug):
     tag = get_object_or_404(Tag, slug=tag_slug)
     posts = Post.objects.filter(tags=tag).order_by('-posted')
 
+    template = loader.get_template('tag.html')
+    
     context = {
         'posts': posts,
         'tag': tag
 
     }
-    return render(request, 'tag.html', context)
+    # return render(request, 'tag.html', context)
+    return HttpResponse(template.render(context, request))
 
 
 @login_required
@@ -129,7 +133,7 @@ def like(request, post_id):
     liked = Likes.objects.filter(user=user, post=post).count()
 
     if not liked:
-        Likes.objects.create(user=user, post=post)
+        like = Likes.objects.create(user=user, post=post)
         current_likes = current_likes + 1
     else:
         Likes.objects.filter(user=user, post=post).delete()

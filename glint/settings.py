@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'comment',
     'directs',
     'notification',
+    'stories',
     
 ]
 
