@@ -14,44 +14,91 @@ from comment.forms import NewCommentForm
 from django.core.paginator import Paginator
 from django.db.models import Q  
 
+from django.utils.timezone import now
+from datetime import timedelta
+from stories.models import StoryStream, Story
+from django.db.models import Prefetch
+# from django.utils.text import slugify
 
-
-# Create your views here.
 @login_required
 def index(request):
     user = request.user
-    user = request.user
     all_users = User.objects.all()
     follow_status = Follow.objects.filter(following=user, follower=request.user).exists()
-
-    profile = Profile.objects.all()
-
-    posts = Stream.objects.filter(user=user)
-    group_ids = []
-
     
-    for post in posts:
-        group_ids.append(post.post_id)
-        
-    post_items = Post.objects.filter(id__in=group_ids).all().order_by('-posted')
+    profile = Profile.objects.get(user=user)
 
+    # Posts from followed users via Stream
+    stream_posts = Stream.objects.filter(user=user)
+    followed_post_ids = [post.post_id for post in stream_posts]
+
+    # Include user's own posts explicitly
+    own_posts = Post.objects.filter(user=user).values_list('id', flat=True)
+    
+    # Merge and remove duplicates
+    all_post_ids = list(set(followed_post_ids) | set(own_posts))
+
+    # Final post list for feed
+    post_items = Post.objects.filter(id__in=all_post_ids).order_by('-posted')
+
+    # Optionally delete expired stories
+    expiration_time = now() - timedelta(hours=24)
+    Story.objects.filter(posted__lt=expiration_time).delete()
+
+    active_stories = Story.objects.filter(posted__gte=expiration_time)
+
+    story_streams = StoryStream.objects.filter(user=user).prefetch_related(
+      Prefetch('story', queryset=active_stories),
+          'following__profile'
+       )
+
+    filtered_streams = []
+    my_stream = None
+    
+
+    for stream in story_streams:
+      active_stories = stream.story.filter(posted__gte=expiration_time)
+      if active_stories.exists():
+        stream.story.set(active_stories)
+        if stream.following == user:
+           my_stream = stream
+        else:
+            filtered_streams.append(stream)
+
+# Always show current user's story first
+    if my_stream:
+      filtered_streams.insert(0, my_stream)
+
+    story_streams = filtered_streams
+
+    user_story_stream = my_stream
+
+    liked_users_data = {}
+    for post in post_items:
+
+        post.liked = Likes.objects.filter(user=request.user, post=post).exists()
+        post.favourited = profile.favourite.filter(id=post.id).exists()
+        post.liked_users = Likes.objects.filter(post=post).select_related('user__profile')[:3]
     query = request.GET.get('q')
     if query:
         users = User.objects.filter(Q(username__icontains=query))
-
         paginator = Paginator(users, 6)
         page_number = request.GET.get('page')
         users_paginator = paginator.get_page(page_number)
-
 
     context = {
         'post_items': post_items,
         'follow_status': follow_status,
         'profile': profile,
         'all_users': all_users,
+        'story_streams': story_streams,
+        'liked_users_data':liked_users_data,
+        
+        'user_story_stream': user_story_stream,
         # 'users_paginator': users_paginator,
     }
     return render(request, 'index.html', context)
+
 
 
 @login_required
@@ -65,15 +112,21 @@ def NewPost(request):
         if form.is_valid():
             picture = form.cleaned_data.get('picture')
             caption = form.cleaned_data.get('caption')
-            tag_form = form.cleaned_data.get('tags')
-            tag_list = list(tag_form.split(','))
+
+            tag_form = form.cleaned_data.get('tags') or "" 
+
+            tag_list = [tag.strip() for tag in tag_form.split(',') if tag.strip()]
+
+            
 
             for tag in tag_list:
                 t, created = Tag.objects.get_or_create(title=tag)
                 tags_obj.append(t)
-            p, created = Post.objects.get_or_create(picture=picture, caption=caption, user=user)
-            p.tags.set(tags_obj)
-            p.save()
+
+            p = Post.objects.create(picture=picture, caption=caption, user=user)
+            if tags_obj: 
+                p.tags.set(tags_obj)
+            
             return redirect('profile', request.user.username)
     else:
         form = NewPostform()
@@ -88,6 +141,15 @@ def PostDetail(request, post_id):
     user = request.user
     post = get_object_or_404(Post, id=post_id)
     comments = Comment.objects.filter(post=post).order_by('-date')
+
+   
+
+    post.liked = Likes.objects.filter(user=user, post=post).exists()
+
+    profile = Profile.objects.get(user=user)
+    
+    post.favourited = profile.favourite.filter(id=post.id).exists()
+
 
     if request.method == "POST":
         form = NewCommentForm(request.POST)
@@ -105,6 +167,10 @@ def PostDetail(request, post_id):
         'post': post,
         'form': form,
         'comments': comments,
+        'liked': post.liked,
+        
+        
+        
     }
     return render(request, 'postdetail.html', context)
 
@@ -121,7 +187,7 @@ def Tags(request, tag_slug):
         'tag': tag
 
     }
-    # return render(request, 'tag.html', context)
+
     return HttpResponse(template.render(context, request))
 
 
@@ -141,7 +207,6 @@ def like(request, post_id):
         
     post.likes = current_likes
     post.save()
-    # return HttpResponseRedirect(reverse('post-details', args=[post_id]))
     return HttpResponseRedirect(reverse('post-details', args=[post_id]))
 
 
@@ -157,4 +222,6 @@ def favourite(request, post_id):
         profile.favourite.add(post)
     return HttpResponseRedirect(reverse('post-details', args=[post_id]))
          
-    
+
+
+

@@ -7,15 +7,19 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-
+from django.contrib.auth.decorators import login_required
 from app.models import Post, Follow, Stream
 from authy.models import Profile
 from authy.forms import EditProfileForm, UserRegisterForm
 from django.urls import resolve
+
+from stories.models import StoryStream, Story
+from django.utils.timezone import now
+from datetime import timedelta
  
 
 # Create your views here.
-
+@login_required(login_url='/users/sign-in/')
 def UserProfile(request, username):
     Profile.objects.get_or_create(user=request.user)
     user = get_object_or_404(User, username=username)
@@ -67,6 +71,7 @@ def EditProfile(request):
             profile.url = form.cleaned_data.get('url')
             profile.bio = form.cleaned_data.get('bio')
             profile.save()
+            
             return redirect('profile', profile.user.username)
     else:
         form = EditProfileForm(instance=request.user.profile)
@@ -75,6 +80,7 @@ def EditProfile(request):
         'form':form,
     }
     return render(request, 'editprofile.html', context)
+
 
 def follow(request, username, option):
     user = request.user
@@ -92,6 +98,15 @@ def follow(request, username, option):
                 for post in posts:
                     stream = Stream(post=post, user=request.user, date=post.posted, following=following)
                     stream.save()
+
+                # active stories to user's story stream
+                expiration_time = now() - timedelta(hours=24)
+                active_stories = Story.objects.filter(user=following, posted__gte=expiration_time)
+
+                if active_stories.exists():
+                    story_stream, created = StoryStream.objects.get_or_create(user=user, following=following)
+                    story_stream.story.set(active_stories)
+                    story_stream.save()
         return HttpResponseRedirect(reverse('profile', args=[username]))
 
     except User.DoesNotExist:
@@ -115,8 +130,6 @@ def register(request):
             # return redirect('editprofile')
             return redirect('index')
             
-
-
     elif request.user.is_authenticated:
         return redirect('index')
     else:
@@ -125,3 +138,6 @@ def register(request):
         'form': form,
     }
     return render(request, 'sign-up.html', context)
+
+
+

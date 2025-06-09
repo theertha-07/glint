@@ -5,11 +5,7 @@ from django.db.models.signals import post_save, post_delete
 from django.utils.text import slugify
 from django.urls import reverse
 import uuid
-
 from notification.models import Notification
-
-
-# from notification.models import Notification
 
 
 # uploading user files to a specific directory
@@ -36,14 +32,11 @@ class Tag(models.Model):
             self.slug = slugify(self.title)
         return super().save(*args, **kwargs)
 
-# class PostFileContent(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='content_owner')
-#     file = models.FileField(upload_to=user_directory_path)
+
 
 class Post(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     picture = models.ImageField(upload_to=user_directory_path, verbose_name="Picture", null=True)
-    # content =  models.ManyToManyField(PostFileContent, related_name='contents')
     caption = models.CharField(max_length=10000, verbose_name="Caption")
     posted = models.DateField(auto_now_add=True)
     tags = models.ManyToManyField(Tag, related_name="tags")
@@ -53,14 +46,7 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse("post-details", args=[str(self.id)])
 
-    # def __str__(self):
-	#     return str(self.id)
-    
-    # def __str__(self):
-    #     return str(self.caption)
-
  
-
 
 class Likes(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_like')

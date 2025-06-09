@@ -2,28 +2,28 @@ import importlib
 from django.shortcuts import render, redirect
 from notification.models import Notification
 
-#new change!!!!
 from django.template import loader
 from django.http import HttpResponse
+
+from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 
 
 def ShowNotification(request):
     user = request.user
+    Notification.objects.filter(user=user, is_seen=False).update(is_seen=True)
     notifications = Notification.objects.filter(user=user).order_by('-date')
-
-    # #new change!!!
-    # Notification.objects.filter(user=user, is_seen=False).update(is_seen=True)
     
-    # template = loader.get_template('notifications/notification.html')
+    template = loader.get_template('notifications/notification.html')
 
     context = {
         'notifications': notifications,
 
     }
-    return render(request, 'notifications/notification.html', context)
+    return HttpResponse(template.render(context, request))
 
-    # return HttpResponse(template.render(context, request))
-
+@login_required
+@require_POST
 def DeleteNotification(request, noti_id):
     user = request.user
     Notification.objects.filter(id=noti_id, user=user).delete()
@@ -37,4 +37,5 @@ def CountNotifications(request):
 
 	return {'count_notifications':count_notifications}
 
-# Create your views here.
+
+

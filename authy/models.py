@@ -10,18 +10,10 @@ import uuid
 from django.utils import timezone
 from app.models import Post
 
-
-
-
-
 # uploading user files to a specific directory
 def user_directory_path(instance, filename):
     return 'user_{0}/{1}'.format(instance.user.id, filename)
-
-
-
-
-    
+  
 
 class Profile(models.Model):
     user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
@@ -33,9 +25,6 @@ class Profile(models.Model):
     url = models.URLField(max_length=200, null=True, blank=True)
     favourite = models.ManyToManyField(Post, blank=True)
 
-
-
-#profile resize 
      
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -51,8 +40,6 @@ class Profile(models.Model):
             output_size = (300, 300)
             img.thumbnail(output_size)
             img.save(self.image.path)
-
-
 
 
 

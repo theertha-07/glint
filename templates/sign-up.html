@@ -9,30 +9,49 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <script src="https://kit.fontawesome.com/fc1e235b2e.js"></script>
   <link rel="stylesheet" href="{% static 'assets2/style.css' %}">
-  <title>Instagram | Register</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap" rel="stylesheet">
+
+  <title>Glint | Register</title>
+
+<style>
+.zen-dots-regular {
+  font-family: "Zen Dots", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 3rem;
+  justify-items: center;
+  margin-bottom: 10px;
+  background: linear-gradient(90deg, #463c7c, #1d7dd6, #96164b,#970490);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+  color: #161515;
+}
+</style>
 </head>
 
 <body>
 
   <div id="wrapper">
     <div class="container">
-      <div class="phone-app-demo"></div>
+      <div class="phone-app-demo"><img src="{% static 'assets2/images/app.png' %}"></div>
       <div class="form-data">
         <form action="" method="POST">
           {% csrf_token %}
           <div class="logo">
-            <img src="{% static 'assets2/images/logo.png' %}" alt="logo">
+            <p class="zen-dots-regular">Glint</p>
           </div>
-          <!-- <input type="text" placeholder="Phone number, username, or email"> -->
-          <!-- <input type="password" placeholder="Password"> -->
+    
           {{form.username}}
           {{form.email}}
           {{form.password1}}
           {{form.password2}}
           <button class="form-btn" type="submit">Log in</button>
-
-
-          <!-- <a href="index.html" class="form-btn" type="submit">Log in</a> -->
+          
           <span class="has-separator">Or</span>
           <a class="facebook-login" href="#">
             <i class="fab fa-facebook-square"></i> Log in with Facebook
@@ -45,8 +64,8 @@
         <div class="get-the-app">
           <span>Get the app.</span>
           <div class="badges">
-            <img src="{% static 'assets2/images/app-store.png' %}" alt="app-store badge">
-            <img src="{% static 'assets2/images/google-play.png' %}" alt="google-play badge">
+            <img src="{% static 'assets2/images/app-store.png' %}" alt="app-store badge" style="width: 210px;">
+            <img src="{% static 'assets2/images/google-play.png' %}" alt="google-play badge" style="width: 210px;">
           </div>
         </div>
       </div>

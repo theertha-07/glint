@@ -2,36 +2,197 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
-<br><br>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
+
+  <!-- <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <script src="https://kit.fontawesome.com/fc1e235b2e.js"></script>
-  <link rel="stylesheet" href="{% static 'assets2/style.css' %}">
-  <title>Instagram Login Form</title>
+  <script src="https://kit.fontawesome.com/fc1e235b2e.js"></script>-->
+  <!-- <link rel="stylesheet" href="{% static 'assets2/style.css' %}">
+  <title>Instagram Login Form</title>  -->
+
+<style>
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+html {
+  font-size: 12px;
+  box-sizing: border-box;
+}
+img {
+  max-width: 100%;
+  height: auto ;
+}
+a { text-decoration: none; }
+body { background-color: var(--primary); }
+
+#wrapper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 5rem;
+}
+.container {
+  width: 100%;
+  max-width: 93.5rem;
+  margin: 1rem auto 0; 
+}
+#wrapper > .container {
+  display: flex;
+  padding: 0 2rem;
+}
+
+.form-data {
+  width: 100%;
+  max-width: 35rem;
+  margin-top: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+.form-data form {
+  background-color: var(--primary);
+  border: 2px solid #eee;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+.form-data form input {
+  padding: .8rem;
+  margin-bottom: .5rem;
+  border: 2px solid #eee;
+  border-radius: .4rem;
+  background-color: var(--primary);
+}
+.form-btn {
+  margin: 1rem 0 1.5rem;
+  height: 3rem;
+  background: linear-gradient(60deg,  #281c69,#539bdf,#281c69);
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #fff;
+  border: none;
+  border-radius: .4rem;
+  cursor: pointer;
+}
+
+.logo img {
+  width: 17.5rem;
+  margin-bottom: 2.5rem;
+}
+
+:root.darkTheme .form-data form input{ color: white; }
+:root.darkTheme .form-data{ color: white; }
+
+.has-separator {
+  font-size: 1.3rem;
+  color: #999999;
+  text-transform: uppercase;
+  position: relative;
+  margin-bottom: 2.5rem;
+}
+.has-separator::before,
+.has-separator::after {
+  content: "";
+  position: absolute;
+  background-color: #eee;
+  width: 40%;
+  height: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.has-separator::before {
+  left: 0;
+}
+.has-separator::after {
+  right: 0;
+}
+
+footer {
+  padding: 5rem 0;
+}
+footer .container {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 1.3rem;
+  margin-top: 0;
+  flex-wrap: wrap;
+}
+.footer-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+}
+.footer-nav ul li { margin-right: 1.6rem; }
+.footer-nav ul li a { color: #3897f0; }
+.copyright-notice { color: #999999; }
+
+
+
+/* MEDIA QUERIES */
+@media (max-width: 900px) {
+  .form-data { margin: 0 auto; }
+  .wrapper > .container { padding: 0; }
+  footer .container {
+    padding: 0 2rem;
+    justify-content: center;
+  }
+  .footer-nav ul {
+    justify-content: center;
+  }
+  .footer-nav ul li {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 450px) {
+  .wrapper { padding-top: 0; }
+  .form-data form {
+    background-color: white;
+    border: none;
+  }
+  .sign-up {
+    background-color: transparent;
+    border: none;
+    margin: 4rem 0;
+  }
+  footer {
+    padding-bottom: 2rem;
+  }
+}
+</style>
 </head>
 
 <body>
-
+  
   <div id="wrapper">
     <div class="container">
-      <div class="phone-app-ddemo"></div>
       <div class="form-data">
         <form action="" method="POST" enctype="multipart/form-data">
 			{% csrf_token %}
-          <div class="logo">
-            <h3 style="padding: 20px; font-size: 20px;">Create New Post</h3>
+          <div class="newpost">
+            <h3 style="padding: 20px; font-size: 25px;">Create New Post</h3>
+    
           </div>
-		  <!-- {{form|crispy}} -->
+       
           {{form.picture}} <br>
           {{form.caption}} <br>
           {{form.tags}} <br>
+
           <button class="form-btn" type="submit">Post</button>
-          <!-- <a href="index.html" class="form-btn" type="submit">Log in</a> -->
           
         </form>
         
@@ -78,7 +239,7 @@
           </ul>
         </nav>
         <div class="copyright-notice">
-          &copy 2022 Instagram
+          &copy 2025 Glint
         </div>
       </div>
     </footer>
@@ -86,6 +247,8 @@
   </div>
 
 </body>
+
+
 
 </html>
 {% endblock content %}

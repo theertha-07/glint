@@ -42,7 +42,7 @@ INSTALLED_APPS = [
 
     'app',
     'crispy_forms',
-    'crispy_bootstrap4',
+    'crispy_bootstrap5',
     'authy',
     'comment',
     'directs',
@@ -77,6 +77,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'directs.views.checkDirects',
+                'notification.views.CountNotifications',
             ],
         },
     },
@@ -154,7 +156,7 @@ LOGOUT_REDIRECT_URL = 'sign-in'
 
 LOGIN_URL = 'sign-in'
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

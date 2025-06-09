@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<style>
+html {
+  font-size: 12px;
+  box-sizing: border-box;
+}
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--primary);
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  height: 100vh;
+}
+
+.card {
+  background-color: var(--primary);
+  border: 1px solid white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  text-align: center;
+  margin-top: 50px;
+}
+.title {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 30px;
+  font-weight: bold;
+}
+.card-content h3{
+  color: black;
+}
+form {
+  display: flex;
+  flex-direction: column;  
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+  text-align: left;
+}
+button {
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+.is-success{
+  background: linear-gradient(30deg, #463c7c, #1d7dd6);
+}
+
+.control, textarea {
+  width: 100%;
+  margin-bottom: 15px;
+  background-color: var(--primary);
+  border-radius: 4px;
+  font-size: 16px;  
+}
+.control1{
+  border: 1px solid #ccc;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+:root.darkTheme .card-content h3{ color: white; }
+:root.darkTheme .label,.title{ color: white; }
+:root.darkTheme input{ color: white; }
+:root.darkTheme textarea{ color: white; }
+</style>
+</head>
+<body>
+  
+ 
+<div class="columns is-mobile is-centered">
+  <div class="column is-half">
+    <div class="card">
+      <div class="card-content">
+        <form method="post" enctype="multipart/form-data" role="form">
+          {% csrf_token %}
+          <h3 class="title is-3 has-text-centered">New Story</h3>
+
+          <div class="field">
+            <label class="label" style="font-size: 16px;">Choose your media</label>
+            <div class="control1">
+              {{ form.content }}
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label" style="font-size: 16px;">Caption</label>
+            <div class="control">
+              {{ form.caption }}
+            </div>
+          </div>
+
+          <div class="field is-grouped is-grouped-centered">
+            <div class="control">
+              <button type="submit" class="button is-success">Create</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

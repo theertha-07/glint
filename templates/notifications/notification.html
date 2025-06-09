@@ -10,27 +10,138 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <!-- <script src="https://kit.fontawesome.com/fc1e235b2e.js"></script> -->
-  <link rel="stylesheet" href="{% static 'assets2/style.css' %}">
-  <title>Instagram Login Form</title>
+  <script src="https://kit.fontawesome.com/fc1e235b2e.js"></script>
+  <!-- <link rel="stylesheet" href="{% static 'assets2/style.css' %}"> -->
+  <title>Glint</title>
+
+<style>
+html {
+  font-size: 12px;
+  box-sizing: border-box;
+}
+a { text-decoration: none; }
+body { background-color: var(--primary); }
+#wrapper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 5rem;
+}
+.container {
+  width: 100%;
+  max-width: 93.5rem;
+  margin: 1rem auto 0; 
+}
+#wrapper > .container {
+  display: flex;
+  padding: 0 2rem;
+}
+
+footer {
+  padding: 5rem 0;
+}
+footer .container {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 1.3rem;
+  margin-top: 0;
+  flex-wrap: wrap;
+}
+.footer-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+}
+.footer-nav ul li {
+  margin-right: 1.6rem;
+}
+.footer-nav ul li a {
+  color: #3897f0;
+}
+.copyright-notice {
+  color: #999999;
+}
+
+.notification-list{
+  background-color: var(--primary);
+  border: 2px solid #eee;
+  flex-direction: column;
+  padding: 2rem 2rem;
+  text-align: center;
+  align-items: center;
+}
+.form-data {
+  width: 100%;
+  max-width: 35rem;
+  margin-top: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+  display: block; 
+}
+.form-data form {
+  border: 2px solid transparent;
+  display: flex;
+  flex-direction: column;
+  padding: 40;
+  text-align: center;
+}
+
+:root.darkTheme .form-data { color: white; }
+:root.darkTheme .comment { color: white; }
+:root.darkTheme .name { color: white; }
+:root.darkTheme .bi-x-lg{ color: white; }
+
+/* MEDIA QUERIES */
+@media (max-width: 900px) {
+  .form-data {
+    background-color: #fff;
+    margin: 0 auto;
+  }
+  .wrapper > .container {
+    padding: 0;
+  }
+  footer .container {
+    padding: 0 2rem;
+    justify-content: center;
+  }
+  .footer-nav ul {
+    justify-content: center;
+  }
+  .footer-nav ul li {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 450px) {
+  .wrapper {
+    padding-top: 0;
+  }
+  footer {
+    padding-bottom: 2rem;
+  }
+}
+</style>
 </head>
 
 <body>
 
   <div id="wrapper">
     <div class="container">
-      <div class="phone-app-ddemo"></div>
+      
       <div class="form-data">
         
-    
-
-        <form action="" method="POST" enctype="multipart/form-data">
-          <div class="logo">
+          <div class="notification-list">
+          <div class="noti">
             <h3 style="padding-top: 5px; font-size: 20px;">Notifications</h3>
           </div>
 
-            <!-- First Section -->
+           
             {% for notification in notifications %}
+            
                 {% if notification.notification_types == 1 %}
                     <div class="alert alert-white alert-dismissible fade show" role="alert" style="border: 1px rgba(219, 219, 219, 0.699) solid; border-radius: 25px;">
                         <div class="side-menu__user-profile">
@@ -42,8 +153,8 @@
                                 {% endif %}
                             </a>
                             <div class="side-menu__user-idnfo" style="text-align: start;">
-                                <a href="{% url 'profile' user.username %}" style="font-size: 15px; color: black; text-align: center;">{{ notification.sender.profile.first_name|title }} {{ notification.sender.profile.last_name|title }}</a> <br>
-                                <a href="{% url 'profile' user.username %}" style="font-size: 15px; color: black; text-align: center;"><b><i class="bi bi-hand-thumbs-up-fill" style="color: blue;"></i> Liked your Picture</b></a> <br>
+                                <a href="{% url 'profile' user.username %}" style="font-size: 15px; color: black; text-align: center;"><span class="name">{{ notification.sender.profile.first_name|title }} {{ notification.sender.profile.last_name|title }}</span></a> <br>
+                                <a href="{% url 'profile' user.username %}" style="font-size: 15px; color: black; text-align: center;"><b class="comment"><i class="bi bi-hand-thumbs-up-fill" style="color: rgb(67, 140, 200);"></i> Liked your Picture</b></a> <br>
                                 <a href="{% url 'profile' user.username %}" style="font-size: 10px; color: rgb(75, 75, 75); ">{{ notification.date }}</a>
 
                             </div>
@@ -51,7 +162,12 @@
                                 <img src="{{ notification.post.picture.url }}" alt="User Picture">
                             </a>
                         </div>
-                        <a href="{% url 'delete-notification' notification.id %}" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></a>
+                       
+                        <form method="POST" action="{% url 'delete-notification' notification.id %}" style="display: inline;">
+                          {% csrf_token %}
+                          <button type="submit" class="btn-close" aria-label="Close" style="border: none; background: none;"><i class="bi bi-x-lg"></i></button>
+                      </form>
+                      
                       </div>
                 {% endif %}
                 
@@ -66,12 +182,17 @@
                                 {% endif %}
                             </a>
                             <div class="side-menu__user-idnfo" style="text-align: start;">
-                                <a href="{% url 'profile' user.username %}" style="font-size: 15px; color: black; text-align: center;">{{ notification.sender.profile.first_name|title }} {{ notification.sender.profile.last_name|title }}</a> <br>
-                                <a href="{% url 'profile' user.username %}" style="font-size: 15px; color: black; text-align: center;"><b><i class="bi bi-person-fill" style="font-size: 20px;color: rgb(255, 0, 0);"></i> Followed You</b></a> <br>
+                                <a href="{% url 'profile' user.username %}" style="font-size: 15px; color: black; text-align: center;"><span class="name">{{ notification.sender.profile.first_name|title }} {{ notification.sender.profile.last_name|title }}</span></a> <br>
+                                <a href="{% url 'profile' user.username %}" style="font-size: 15px; color: black; text-align: center;"><b class="comment"><i class="bi bi-person-plus-fill" style="font-size: 20px;color: rgb(33, 125, 42);"> </i>Followed You</b></a> <br>
                                 <a href="{% url 'profile' user.username %}" style="font-size: 10px; color: rgb(75, 75, 75); ">{{ notification.date }}</a>
                             </div>
                         </div>
-                        <a href="{% url 'delete-notification' notification.id %}" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></a>
+                       
+                        <form method="POST" action="{% url 'delete-notification' notification.id %}" style="display: inline;">
+                          {% csrf_token %}
+                          <button type="submit" class="btn-close" aria-label="Close" style="border: none; background: none;"><i class="bi bi-x-lg"></i></button>
+                      </form>
+                      
                       </div>
                 {% endif %}
 
@@ -89,26 +210,32 @@
                     </a>
                      
                       <div class="side-menu__user-idnfo" style="text-align: start;">
-                        <a href="{% url 'profile' user.username %}" style="font-size: 15px; color: black; text-align: center;">{{ notification.sender.profile.first_name|title }} {{ notification.sender.profile.last_name|title }}</a> <br>
-                        <a href="{% url 'profile' user.username %}" style="font-size: 15px; color: black; text-align: center;"><b><i class="bi bi-chat-dots-fill" style="color: rgb(252, 122, 1);"></i> Commented on your post</b></a> <br>
+                        {% if user.profile.first_name %}
+                        <a href="{% url 'profile' user.username %}" style="font-size: 15px; color: black; text-align: center;"><span class="name">{{ notification.sender.profile.first_name|title }} {{ notification.sender.profile.last_name|title }}</span></a>
+                        {% else %}
+                        <a href="{% url 'profile' user %}">{{user.username}}</a>
+                        {% endif %} <br>
+                        <a href="{% url 'profile' user.username %}" style="font-size: 15px; color: black; text-align: center;"><b class="comment"><i class="bi bi-chat-dots-fill" style="color: rgb(252, 122, 1);"></i> Commented on your post</b></a> <br>
                         <a href="{% url 'profile' user.username %}" style="font-size: 10px; color: rgb(75, 75, 75); ">{{ notification.date }}</a>
                       </div>
 
                       <a href="{% url 'profile' user.username %}" class="side-menu__user-avatar" style="margin-left: 20px;">
                         <img src="{{ notification.post.picture.url }}" alt="User Picture">
                       </a>
+                       
                   </div>
-                  <a href="{% url 'delete-notification' notification.id %}" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></a>
+                 
+                  <form method="POST" action="{% url 'delete-notification' notification.id %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-close" aria-label="Close" style="border: none; background: none;"><i class="bi bi-x-lg"></i></button>
+                </form>
+                
               </div>
                 {% endif %}
 
             {% endfor %}
 
-            <!-- third Section -->
-
-            
-
-        </form>
+            </div>
 
 
       </div>
@@ -154,7 +281,7 @@
           </ul>
         </nav>
         <div class="copyright-notice">
-          &copy 2019 Instagram
+          &copy 2025 Glint
         </div>
       </div>
     </footer>
@@ -162,6 +289,6 @@
   </div>
 
 </body>
-
 </html>
+
 {% endblock content %}

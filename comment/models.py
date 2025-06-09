@@ -4,8 +4,7 @@ from django.contrib.auth.models import User
 from app.models import Post
 from django.db.models.signals import post_save, post_delete
 from notification.models import Notification
-# Create your models here.
-#new changes
+
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comment")
@@ -13,8 +12,6 @@ class Comment(models.Model):
     body = models.TextField()
     date = models.DateTimeField(auto_now_add=True, null=True)
 
-    # def __str__(self):
-    #     return self.post
     
     def user_comment_post(sender, instance, *args, **kwargs):
         comment = instance

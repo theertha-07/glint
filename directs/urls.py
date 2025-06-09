@@ -7,5 +7,4 @@ urlpatterns = [
     path('send/', SendDirect, name="send-directs"),
     path('search/', UserSearch, name="search-users"),
     path('new/<username>', NewConversation, name="conversation"),
-
 ]

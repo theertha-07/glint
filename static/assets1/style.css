@@ -101,6 +101,7 @@ img { max-width: 100%; }
     background-color: transparent;
     border: none;
     cursor: pointer;
+    
 }
 .header__theme-button-sun {
     display: none;
@@ -776,6 +777,8 @@ img { max-width: 100%; }
     border: 1px solid var(--img-border);
     border-radius: 50%;
 }
+
+
 
 
 /* Media Queries */

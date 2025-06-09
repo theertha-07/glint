@@ -1,6 +1,4 @@
-from django.db import models
 
-# Create your models here.
 
 
 from django.db import models
@@ -12,7 +10,7 @@ from app.models import Follow
 # Create your models here.
 
 def user_directory_path(instance, filename):
-    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
+
     return 'user_{0}/{1}'.format(instance.user.id, filename)
 
 
@@ -48,5 +46,7 @@ class StoryStream(models.Model):
 			s.story.add(new_story)
 			s.save()
 
-# Story Stream
 post_save.connect(StoryStream.add_post, sender=Story)
+
+
+

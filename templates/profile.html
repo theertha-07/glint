@@ -13,66 +13,184 @@
     <meta name="description" content="This project demonstrates how CSS grid (with flexbox and float fallback) can be used to re-create the layout of an Instagram profile page.">
 
     <!-- Title -->
-    <title>Instagram Profile Layout</title>
+    <title>Glint</title>
 
     <!-- External CSS Files -->
+    
     <link rel="stylesheet" href="{% static 'assets3/css/reset.css' %}">
     <link rel="stylesheet" href="{% static 'assets3/css/styles.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
 
+
+<style>
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+html {
+  font-size: 12px;
+  box-sizing: border-box;
+}
+body { background-color: var(--primary); }
+img {
+max-width: 100%;
+height: auto ;
+}
+
+.btn-primary{
+    color: #fff;
+    background: linear-gradient(30deg, #463c7c, #1d7dd6);
+    border-color: #0d6efd;
+    padding: 8px 10px 8px 10px;
+    font-size: 12px;
+}
+.profile-actions {
+    display: flex;
+    gap: 10px; 
+    align-items: center;
+    margin-top: 15px; 
+}
+.profile-actions .btn {
+    margin: 0;
+}
+.profile-actions button {
+    display: inline-flex; 
+    align-items: center;
+}
+
+.profile-image img{
+    margin-top: 0;
+    width: 150px;         
+    height: 150px;
+    object-fit: cover;    
+    border-radius: 50%;   
+}
+
+.profile-user-settings .btns {
+    display: inline-block;
+    color: #000000; 
+    font-size: 20px; 
+    font-weight: 900; 
+    text-decoration: none; 
+    padding: 5px 10px; 
+    border-radius: 5px; 
+    transition: all 0.3s ease; 
+    margin: 5px;
+}
+.profile-user-settings .btns:hover {
+    color: #fff;
+    background: linear-gradient(30deg, #463c7c, #1d7dd6);
+    text-decoration: underline;
+    cursor: pointer; 
+}
+.profile-user-settings .btns:focus {
+    outline: none; 
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.7); 
+}
+/* Optional:subtle animation effect */
+.profile-user-settings .btns:hover {
+    transform: scale(1.05); /* Slight zoom effect when hovered */
+}
+.profile-actions{ color: black; }
+
+:root.darkTheme .user-name-line{ color: white; }
+:root.darkTheme .profile-actions{ color: white; }
+:root.darkTheme .profile-bio{ color: white; }
+:root.darkTheme .profile-stats{ color: white; }
+:root.darkTheme .profile-user-settings{ color: white;}
+:root.darkTheme .profiele-edit-btn{ color: white; }
+:root.darkTheme .profeile-edit-btn{ color: white; }
+
+/* MEDIA QUERIES */
+@media (max-width: 40rem){
+    .profile-image img{
+        width: 100px;
+        height: 100px;
+    }
+    .profile-user-settings {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start; 
+        gap: 10px;
+    }
+
+    .user-name-line {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .profile-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .profile-user-settings{
+        display: inline;
+    }
+}
+
+</style>
+
 </head>
 <body>
 
     <header>
+        
         <br><br><br>
+        
         <div class="container">
 
             <div class="profile">
 
-                <div class="profile-image">
+                <a href="{{request.user.profile.image.url}}" class="profile-image">
 
-                    <img src="{{profile.image.url}}" alt="" style="width: 200px; height: 200px;">
+                    <img src="{{profile.image.url}}" alt="">
 
-                </div>
+                </a>
 
                 <div class="profile-user-settings">
-                        {% if profile.first_name %}
-                        <h6 class="profile-user-name">{{profile.first_name}} {{profile.last_name}}</h6> <br>
-                        {% endif %}
-                        <h5 style="font-size: 15px;" class="profile-user-name">@{{profile.user.username}}</h5>
+                    {% if profile.first_name %}
+                    <div class="user-name-line">
+                        <h6 class="profile-user-name" style="margin-bottom: 10px;">{{profile.first_name}} {{profile.last_name}}</h6>
+                        
+                        <h5 class="profile-username-tag">@{{profile.user.username}}</h5>
+                    </div>
+                    {% endif %}
+                
 
-                        {% if request.user.is_authenticated and request.user == profile.user %}
+                    {% if request.user.is_authenticated and request.user == profile.user %}
+
+                    <div class="profile-actions">
                         <a style="text-decoration: none;" href="{% url 'editprofile' %}" class="btn profile-edit-btn">Edit Profile</a>
-                        <!-- <a style="text-decoration: none;" href="{% url 'sign-out' %}" class="btn profile-edit-btn">Logout</a> -->
                         <form method="POST" action="{% url 'sign-out' %}">
                             {% csrf_token %}
                             <button type="submit" class="btn profile-edit-btn">Logout</button>
                         </form>
-                        <button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog" aria-hidden="true"></i></button>
-
+                            <button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog" aria-hidden="true"></i></button>
+                    </div>
                         
-                        {% endif %}
-                        <br><br>
-                        {% if request.user.is_authenticated and request.user != profile.user %}
-                            {% if follow_status == True %}
+                    {% endif %}
+                    <br><br>
+                    {% if request.user.is_authenticated and request.user != profile.user %}
+                        {% if follow_status == True %}
                                 <a href="{% url 'follow' profile.user 0 %}" class="btn profile-edit-btn" style="color: red;">Unfollow</a> <br><br>
                             {% else %}
                                 <a href="{% url 'follow' profile.user 1 %}" class="btn profile-edit-btn" style="color: green;">Follow</a> <br><br>
-                            {% endif %}
                         {% endif %}
+                    {% endif %}
 
                         {% if request.user.is_authenticated and request.user != profile.user %}
-                                <a href="{% url 'conversation' profile.user  %}" class="btn profile-edit-btn">Message</a> <br><br>
+                                <a href="{% url 'conversation' profile.user %}" class="btn profile-edit-btn">Message</a> <br><br>
                         {% endif %}
                         <br>
 
-                    
-                    
-                    
-                    
-
-                </div>
+                </div> 
 
                 
 
@@ -89,9 +207,9 @@
                     {% endif %}
                     <br><br>
                     <div class="profile-user-settings">
-                        <a  href="{% url 'profile' profile.user %}"  class="btns profiele-edit-btn">Posts</a>
+                        <a  href="{% url 'profile' profile.user %}"  class="btns profiele-edit-btn"><i class="bi bi-grid-3x3-gap-fill"></i></i></a>
                         {% if request.user == profile.user %}
-                        <a  href="{% url 'profilefavourite' profile.user %}"  class="btns profeile-edit-btn">Saved</a>
+                        <a  href="{% url 'profilefavourite' profile.user %}"  class="btns profeile-edit-btn"><i class="bi bi-bookmark-fill"></i></a>
                         {% endif %}
                     </div>
                 </div>
@@ -109,11 +227,8 @@
                 </div>
 
             </div>
-            <!-- End of profile section -->
 
         </div>
-        <!-- End of container -->
-
     </header>
     
     <main>
@@ -123,7 +238,8 @@
             <div class="gallery">
                 
                 {% for post in posts %}
-                <a href="{{post.get_absolute_url}}"><div class="gallery-item" tabindex="0">
+                <a href="{{post.get_absolute_url}}">
+                    <div class="gallery-item" tabindex="0">
 
                     <img src="{{ post.picture.url }}" class="gallery-image" alt="" style="width: 500px; height: 300px; object-fit: cover;">
 
@@ -136,19 +252,15 @@
 
                     </div>
 
-                </div></a>
-                {% endfor %}
-
-                
-
-                
+                    </div>
+                </a>
+                {% endfor %}   
 
             </div>
-            <!-- End of gallery -->
 
 
         </div>
-        <!-- End of container -->
-
     </main>
-    {% endblock content %}
+</body>
+</html>
+{% endblock content %}
